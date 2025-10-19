@@ -1,0 +1,105 @@
+/**
+ * @file Firestore Security Rules
+ * @description This ruleset enforces a user-ownership model for user profiles and reviews, with public read access to reviews.
+ *
+ * Data Structure:
+ * - /users/{userId}: Stores public user profiles, accessible only to the user themselves.
+ * - /reviews/{reviewId}: Top-level collection for all reviews, publicly readable, but writable only by the author.
+ * - /reviews/{reviewId}/comments/{commentId}: Subcollection for comments on a specific review, writable only by the author.
+ *
+ * Key Security Decisions:
+ * - Users can only read and write their own profile data.
+ * - Reviews are publicly readable, but only the author can create, update, or delete them.
+ * - Comments can be created by any authenticated user.
+ * - Listing of users is disallowed for privacy.
+ *
+ * Denormalization for Authorization:
+ * - Reviews include an `authorId` field to simplify ownership checks.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Controls access to user profile documents.
+     * @path /users/{userId}
+     * @allow (get, create, update, delete) User with matching UID.
+     * @deny (get, create, update, delete) User with non-matching UID.
+     * @principle Enforces document ownership for user profiles.
+     */
+    match /users/{userId} {
+      // Define a function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Define a function to check if the requesting user is the owner of the document
+      function isOwner(userId) {
+        return request.auth.uid == userId;
+      }
+
+      // Define a function to check if the user exists
+      function isExistingOwner(userId) {
+        return isOwner(userId) && resource.data.id == userId;
+      }
+
+      allow get: if isOwner(userId);
+      allow list: if false;
+
+      allow create: if isSignedIn() && isOwner(userId);
+      allow update: if isExistingOwner(userId);
+      allow delete: if isExistingOwner(userId);
+    }
+
+    /**
+     * @description Controls access to review documents.
+     * @path /reviews/{reviewId}
+     * @allow (get, list) Public read access.
+     * @allow (create) Author with matching UID in request data.
+     * @allow (update, delete) Author with matching UID in existing document.
+     * @deny (create) Author with non-matching UID in request data.
+     * @deny (update, delete) Author with non-matching UID in existing document.
+     * @principle Enforces owner-only writes for reviews with public read access.
+     */
+    match /reviews/{reviewId} {
+      // Define a function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      // Define a function to check if the requesting user is the owner of the document
+      function isOwner(authorId) {
+        return request.auth.uid == authorId;
+      }
+
+      // Define a function to check if the user exists
+      function isExistingOwner(authorId) {
+        return isOwner(authorId) && resource.data.authorId == request.auth.uid;
+      }
+
+      allow get, list: if true;
+
+      allow create: if isSignedIn() && request.resource.data.authorId == request.auth.uid;
+      allow update: if isSignedIn() && isExistingOwner(resource.data.authorId);
+      allow delete: if isSignedIn() && isExistingOwner(resource.data.authorId);
+    }
+
+    /**
+     * @description Controls access to comment documents within a review.
+     * @path /reviews/{reviewId}/comments/{commentId}
+     * @allow (create) Authenticated user.
+     * @allow (get, list) Public read access.
+     * @deny (update, delete) All requests.
+     */
+    match /reviews/{reviewId}/comments/{commentId} {
+      // Define a function to check if the user is signed in
+      function isSignedIn() {
+        return request.auth != null;
+      }
+
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update, delete: if false;
+    }
+  }
+}

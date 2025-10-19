@@ -1,0 +1,185 @@
+{
+  "entities": {
+    "User": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "User",
+      "type": "object",
+      "description": "Represents a user of the RateHub platform.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the User entity (matches Firebase Auth UID)."
+        },
+        "displayName": {
+          "type": "string",
+          "description": "User's display name."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "URL of the user's profile image.",
+          "format": "uri"
+        },
+        "bio": {
+          "type": "string",
+          "description": "User's biography or short description."
+        },
+        "role": {
+            "type": "string",
+            "description": "User role for authorization.",
+            "enum": ["user", "admin"]
+        }
+      },
+      "required": [
+        "id",
+        "displayName",
+        "email",
+        "role"
+      ]
+    },
+    "Review": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Review",
+      "type": "object",
+      "description": "Represents a review of a movie, book, or game.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Review entity."
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Reference to the User who created the review. (Matches Firebase Auth UID)"
+        },
+        "category": {
+          "type": "string",
+          "description": "Type of content being reviewed (movie, book, or game)."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the review."
+        },
+        "content": {
+          "type": "string",
+          "description": "The main text content of the review."
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "URL of an image associated with the review.",
+          "format": "uri"
+        },
+        "rating": {
+          "type": "number",
+          "description": "Rating given in the review (e.g., 1 to 5 stars)."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp when the review was created.",
+          "format": "date-time"
+        },
+        "year": {
+          "type": "number",
+          "description": "The release year of the content being reviewed."
+        },
+        "genre": {
+          "type": "string",
+          "description": "The genre of the content being reviewed."
+        },
+        "upvotes": {
+            "type": "number"
+        },
+        "downvotes": {
+            "type": "number"
+        },
+        "upvotedBy": {
+            "type": "array",
+            "items": { "type": "string" }
+        },
+        "downvotedBy": {
+            "type": "array",
+            "items": { "type": "string" }
+        }
+      },
+      "required": [
+        "id",
+        "authorId",
+        "category",
+        "title",
+        "content",
+        "rating",
+        "createdAt"
+      ]
+    },
+    "Comment": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Comment",
+      "type": "object",
+      "description": "Represents a comment on a review.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Comment entity."
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Reference to the User who created the comment. (Matches Firebase Auth UID)"
+        },
+        "author": {
+          "type": "object",
+          "description": "Denormalized author information for display.",
+          "properties": {
+            "displayName": { "type": "string" },
+            "photoURL": { "type": "string", "format": "uri" }
+          },
+          "required": ["displayName"]
+        },
+        "content": {
+          "type": "string",
+          "description": "The text content of the comment."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Date and time the comment was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "authorId",
+        "author",
+        "content",
+        "createdAt"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "Stores public user profiles."
+    },
+    "/reviews/{reviewId}": {
+      "schema": {
+        "$ref": "#/entities/Review"
+      },
+      "description": "Top-level collection for all reviews."
+    },
+    "/reviews/{reviewId}/comments/{commentId}": {
+      "schema": {
+        "$ref": "#/entities/Comment"
+      },
+      "description": "Subcollection for comments on a specific review."
+    }
+  }
+}

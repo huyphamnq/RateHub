@@ -1,0 +1,106 @@
+{
+  "placeholderImages": [
+    {
+      "id": "hero-background",
+      "description": "A vibrant, abstract representation of digital media and connections.",
+      "imageUrl": "https://picsum.photos/seed/hero/1920/1080",
+      "imageHint": "digital media"
+    },
+    {
+      "id": "movie-poster-1",
+      "description": "Sci-fi movie poster for 'Galaxy Runners'",
+      "imageUrl": "https://picsum.photos/seed/movie1/400/600",
+      "imageHint": "science fiction"
+    },
+    {
+      "id": "movie-poster-2",
+      "description": "Comedy movie poster for 'Laugh Riot'",
+      "imageUrl": "https://picsum.photos/seed/movie2/400/600",
+      "imageHint": "comedy movie"
+    },
+    {
+      "id": "movie-poster-3",
+      "description": "Drama movie poster for 'The Last Stand'",
+      "imageUrl": "https://picsum.photos/seed/movie3/400/600",
+      "imageHint": "drama film"
+    },
+    {
+      "id": "book-cover-1",
+      "description": "Fantasy book cover for 'Chronicles of Ether'",
+      "imageUrl": "https://picsum.photos/seed/book1/400/600",
+      "imageHint": "fantasy novel"
+    },
+    {
+      "id": "book-cover-2",
+      "description": "Mystery book cover for 'The Silent Witness'",
+      "imageUrl": "https://picsum.photos/seed/book2/400/600",
+      "imageHint": "mystery book"
+    },
+    {
+      "id": "book-cover-3",
+      "description": "Biography book cover for 'A Life in Code'",
+      "imageUrl": "https://picsum.photos/seed/book3/400/600",
+      "imageHint": "biography person"
+    },
+    {
+      "id": "game-art-1",
+      "description": "Action game art for 'Cybernetic Warriors'",
+      "imageUrl": "https://picsum.photos/seed/game1/600/400",
+      "imageHint": "action video-game"
+    },
+    {
+      "id": "game-art-2",
+      "description": "Strategy game art for 'Kingdoms at War'",
+      "imageUrl": "https://picsum.photos/seed/game2/600/400",
+      "imageHint": "strategy game"
+    },
+    {
+      "id": "game-art-3",
+      "description": "RPG game art for 'Dragon's Breath'",
+      "imageUrl": "https://picsum.photos/seed/game3/600/400",
+      "imageHint": "fantasy RPG"
+    },
+    {
+      "id": "user-avatar-1",
+      "description": "Avatar for user Alex",
+      "imageUrl": "https://picsum.photos/seed/user1/100/100",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "user-avatar-2",
+      "description": "Avatar for user Bella",
+      "imageUrl": "https://picsum.photos/seed/user2/100/100",
+      "imageHint": "woman face"
+    },
+    {
+      "id": "user-avatar-3",
+      "description": "Avatar for user Charlie",
+      "imageUrl": "https://picsum.photos/seed/user3/100/100",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "user-avatar-4",
+      "description": "Avatar for user Admin",
+      "imageUrl": "https://picsum.photos/seed/admin/100/100",
+      "imageHint": "person face"
+    },
+    {
+      "id": "movie-poster-4",
+      "description": "Action movie poster",
+      "imageUrl": "https://picsum.photos/seed/movie4/400/600",
+      "imageHint": "action movie"
+    },
+    {
+      "id": "book-cover-4",
+      "description": "Sci-fi book cover",
+      "imageUrl": "https://picsum.photos/seed/book4/400/600",
+      "imageHint": "sci-fi book"
+    },
+    {
+      "id": "game-art-4",
+      "description": "Adventure game art",
+      "imageUrl": "https://picsum.photos/seed/game4/600/400",
+      "imageHint": "adventure game"
+    }
+  ]
+}
